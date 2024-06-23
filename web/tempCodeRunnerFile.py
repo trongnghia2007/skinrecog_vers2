@@ -1,0 +1,1 @@
+selection = (request.form.getlist('sel[]'))

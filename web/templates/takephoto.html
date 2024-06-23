@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cẩm nang Map</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 style="color:white">Trang chủ</h1>
+        <h1 style="color:white">Cẩm nang</h1>
+        <h1 style="color:white">Map</h1>
+    </header>
+    <main>
+        <section class="warning">
+            <h2>Chú ý</h2>
+            <ul>
+                <li>Chụp ảnh trong điều kiện ánh sáng tốt</li>
+                <li>Mang điện thoại đến gần vùng cần chẩn đoán</li>
+                <li>Giữ điện thoại một lúc để ảnh có thể được lấy nét</li>
+                <li>Tránh nền quá nhiều để đạt được kết quả chính xác nhất</li>
+            </ul>
+        </section>
+        
+        <section class="data">
+            <section class="anh">
+                <h2>Vùng bệnh</h2>
+                <div id="preview"></div>
+                <input id="upload-input" type="file" accept="image/*" style="display: none"/>
+                <button
+                    id="upload-input"
+                    onclick="document.getElementById('upload-input').click();"
+                >
+                Tải ảnh lên
+                </button>
+            </section>
+
+            <section class="symptoms">
+                <h2>Triệu chứng</h2>
+                <input type="text" placeholder="Nhập tại đây...">
+            </section>
+
+        </section>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
