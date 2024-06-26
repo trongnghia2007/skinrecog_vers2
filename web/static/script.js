@@ -27,11 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Get DOM elements
   const uploadInput = document.getElementById("upload-input");
   const preview = document.getElementById("preview");
-  // const myForm = document.getElementById("myForm");
-  // const actionButtons = document.getElementById("action-buttons");
-  // const cancelButton = document.getElementById("cancel-button");
+  const myForm = document.getElementById("myForm");
+  const actionButtons = document.getElementById("action-buttons");
+  const cancelButton = document.getElementById("cancel-button");
   const useButton = document.getElementById("use-button");
-  // const outputSection = document.getElementById("output");
+  const outputSection = document.getElementById("output");
 
   // Function to handle image upload
   function handleImageUpload() {
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         image.style.maxHeight = "100%";
         preview.innerHTML = "";
         preview.appendChild(image);
-        // actionButtons.style.display = "block";
-        // outputSection.style.display = "none";
+        actionButtons.style.display = "block";
+        outputSection.style.display = "none";
       };
       reader.readAsDataURL(file);
     }
@@ -58,9 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to reset the image preview
   function resetImagePreview() {
     preview.innerHTML = "";
-    // actionButtons.style.display = "none";
+    actionButtons.style.display = "none";
     uploadInput.value = "";
-    // outputSection.style.display = "none"; // Ẩn phần kết quả
+    outputSection.style.display = "none"; // Ẩn phần kết quả
   }
 
   // Function to perform SLIC and skin recognition
@@ -71,50 +71,74 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (response.ok) {
-      const result = await response.text();
+      const result = await response.json();
+      console.log("Result:", result); // Debug log
+
       try {
-        // remove loading animation
+        // Remove loading animation
         document.querySelector("#loading-overlay").style.display = "none";
         document.body.classList.remove("loading");
 
-        // remove upload button
+        // Remove upload button
         document.querySelector("button#upload-input").style.display = "none";
-        const json_res = JSON.parse(result);
-        //console.log(json_res); // Xử lý kết quả theo ý muốn (ví dụ: hiển thị cho người dùng)
-        outputSection.style.display = "block"; // Hiển thị phần kết quả
 
-        const frame = document.querySelector("#output");
-        frame.innerHTML = "<h1>Kết Quả</h1>"; // Xóa bỏ nội dung kết quả trước đó
+        // Process the result and display it
+        outputSection.style.display = "block"; // Display the result section
 
-        /////////////////
-        // Ko hiểu lắm //
-        /////////////////
-        for (let i of json_res) {
-          let img = `<div style="margin: 0 auto; width: 224px; height: 224pxborder: 2px solid black">
-                  <img src="/images/${i.segment_data}.jpg" style="width:100%; border: 1px solid black">
-                  <p style="margin-top: 1rem; margin-bottom: 0px; font-size: 1.25rem">${i.prediction}</p>
-                  <p style="margin-top: 0px; font-size: 1.25rem">chính xác: ${i.confidence}%</p>
-                </div>`;
-          frame.innerHTML += img;
-        }
+        outputSection.innerHTML = ""; // Clear previous results
 
-        // Thay thế ảnh preview ban đầu bằng ảnh thực hiện SLIC
+        // Create and append the heading
+        const heading = document.createElement("h1");
+        heading.style.fontSize = "40px";
+        heading.style.textAlign = "center";
+        heading.textContent = "Kết Quả";
+        outputSection.appendChild(heading);
+
+        // Display images and results
+        result.forEach((item) => {
+          const containerDiv = document.createElement("div");
+          containerDiv.style.display = "flex";
+          containerDiv.style.flexWrap = "wrap";
+          containerDiv.style.justifyContent = "space-evenly";
+          containerDiv.style.border = "2px solid black";
+          containerDiv.style.margin = "10px 0";
+
+          const img = document.createElement("img");
+          img.src = `/images/${item.segment_data}.jpg`;
+          console.log(img.src);
+          img.style.width = "100%";
+          img.style.border = "1px solid black";
+
+          const predictionP = document.createElement("p");
+          predictionP.style.marginTop = "1rem";
+          predictionP.style.marginBottom = "0px";
+          predictionP.style.fontSize = "1.25rem";
+          predictionP.textContent = item.prediction;
+
+          const confidenceP = document.createElement("p");
+          confidenceP.style.marginTop = "0px";
+          confidenceP.style.fontSize = "1.25rem";
+          confidenceP.textContent = `chính xác: ${item.confidence}%`;
+
+          containerDiv.appendChild(img);
+          containerDiv.appendChild(predictionP);
+          containerDiv.appendChild(confidenceP);
+
+          outputSection.appendChild(containerDiv);
+        });
+
+        // Replace preview image with SLIC result image
         const slicImage = document.createElement("img");
-        slicImage.src = "/images/.superpixels.jpg"; // Thay đổi đường dẫn tới ảnh SLIC của bạn
+        slicImage.src = "/images/.superpixels.jpg";
         slicImage.style.maxWidth = "100%";
         slicImage.style.maxHeight = "100%";
         preview.innerHTML = "";
         preview.appendChild(slicImage);
-      } catch {
-        console.error(result); // Xử lý kết quả theo ý muốn (ví dụ: hiển thị cho người dùng)
-        outputSection.style.display = "block"; // Hiển thị phần kết quả
+      } catch (error) {
+        console.error(error);
+        outputSection.style.display = "block"; // Display the result section
         outputSection.innerHTML = `<h1 style="font-size: 60px">Kết Quả</h1><p>${result}</p>`;
       }
-
-      // Ẩn "Triệu chứng", "Choose File", file name, "Bắt đầu chẩn đoán" và "Hủy chọn ảnh"
-      myForm.style.display = "none";
-      uploadInput.style.display = "none";
-      useButton.style.display = "none";
     } else {
       console.error("Error performing skin recognition");
     }
