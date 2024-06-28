@@ -44,7 +44,7 @@ def handle_recog():
                 Image.fromarray(layer0.astype(np.uint8)).save(
                     f"test/{filename}.jpg")
 
-            print(content)
+            # print(content)
             return jsonify(content)
 
         except Exception as e:

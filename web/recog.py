@@ -116,9 +116,9 @@ def recognize(img, selection):
         Image.fromarray(mask).save(
             f"segments/seg-{temp_i}_pred-{out['class_name']}_conf-{round(out['confidence'], 3)}.jpg")
 
-        print(
-            f"seg-{temp_i}_pred-{out['class_name']} \nConfidence: {round(out['confidence'], 3)}")
+        # print(
+        #     f"seg-{temp_i}_pred-{out['class_name']} \nConfidence: {round(out['confidence'], 3)}")
 
-        print(selection)
+        # print(selection)
 
     return res

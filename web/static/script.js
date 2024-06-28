@@ -70,78 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: data,
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Result:", result); // Debug log
-
-      try {
-        // Remove loading animation
-        document.querySelector("#loading-overlay").style.display = "none";
-        document.body.classList.remove("loading");
-
-        // Remove upload button
-        document.querySelector("button#upload-input").style.display = "none";
-
-        // Process the result and display it
-        outputSection.style.display = "block"; // Display the result section
-
-        outputSection.innerHTML = ""; // Clear previous results
-
-        // Create and append the heading
-        const heading = document.createElement("h1");
-        heading.style.fontSize = "40px";
-        heading.style.textAlign = "center";
-        heading.textContent = "Kết Quả";
-        outputSection.appendChild(heading);
-
-        // Display images and results
-        result.forEach((item) => {
-          const containerDiv = document.createElement("div");
-          containerDiv.style.display = "flex";
-          containerDiv.style.flexWrap = "wrap";
-          containerDiv.style.justifyContent = "space-evenly";
-          containerDiv.style.border = "2px solid black";
-          containerDiv.style.margin = "10px 0";
-
-          const img = document.createElement("img");
-          img.src = `/images/${item.segment_data}.jpg`;
-          console.log(img.src);
-          img.style.width = "100%";
-          img.style.border = "1px solid black";
-
-          const predictionP = document.createElement("p");
-          predictionP.style.marginTop = "1rem";
-          predictionP.style.marginBottom = "0px";
-          predictionP.style.fontSize = "1.25rem";
-          predictionP.textContent = item.prediction;
-
-          const confidenceP = document.createElement("p");
-          confidenceP.style.marginTop = "0px";
-          confidenceP.style.fontSize = "1.25rem";
-          confidenceP.textContent = `chính xác: ${item.confidence}%`;
-
-          containerDiv.appendChild(img);
-          containerDiv.appendChild(predictionP);
-          containerDiv.appendChild(confidenceP);
-
-          outputSection.appendChild(containerDiv);
-        });
-
-        // Replace preview image with SLIC result image
-        const slicImage = document.createElement("img");
-        slicImage.src = "/images/.superpixels.jpg";
-        slicImage.style.maxWidth = "100%";
-        slicImage.style.maxHeight = "100%";
-        preview.innerHTML = "";
-        preview.appendChild(slicImage);
-      } catch (error) {
-        console.error(error);
-        outputSection.style.display = "block"; // Display the result section
-        outputSection.innerHTML = `<h1 style="font-size: 60px">Kết Quả</h1><p>${result}</p>`;
-      }
-    } else {
-      console.error("Error performing skin recognition");
-    }
+    
   }
 
   // Listen to the "change" event on the file input and call the handleImageUpload function
