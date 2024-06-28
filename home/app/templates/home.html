@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <script src="{{ url_for('static', filename='script.js') }}"></script> 
+</head>
+<body>
+    <header>
+        <h1 style="color:white">Trang chủ</h1>
+        <h1 style="color:white">Lịch sử</h1>
+        <h1 style="color:white">Cẩm nang</h1>
+        <h1 style="color:white">Map</h1>
+    </header>
+
+    <section class="data">
+        <section class="anh">
+            <h2>Vùng bệnh</h2>
+            <div id="preview"></div>
+            <input id="upload-input" type="file" accept="image/*" style="display: none"/>
+            <button
+                id="upload-button"
+                onclick="document.getElementById('upload-input').click();"
+            >
+            Tải ảnh lên
+            </button>
+            <button id="use-button">Sử dụng ảnh</button> <!-- Nút mới -->
+        </section>
+        <section class="symptoms">
+            <h2>Triệu chứng</h2>
+        </section>
+    </section>
+
+    <div class="result">
+        <h2 style="text-align: center">Kết quả</h2>
+        <div class="container"></div> 
+    </div>
+
+</body>
+</html>
